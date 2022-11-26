@@ -55,7 +55,6 @@
 
     public static Fraction operator -(int num, Fraction fraction) => (new Fraction(num)) - fraction;
 
-
     public static Fraction operator *(Fraction fraction1, Fraction fraction2) => new(
         fraction1.Numerator * fraction2.Numerator,
         fraction1.Denominator * fraction2.Denominator
@@ -85,4 +84,41 @@
     public static Fraction operator %(Fraction fraction, int num) => fraction % (new Fraction(num));
 
     public static Fraction operator %(int num, Fraction fraction) => (new Fraction(num)) % fraction;
+
+    public static bool operator ==(Fraction fraction1, Fraction fraction2) => fraction1.Result == fraction2.Result;
+
+    public static bool operator ==(Fraction fraction, double num) => fraction.Result == num;
+
+    public static bool operator ==(double num, Fraction fraction) => fraction == num;
+
+    public static bool operator !=(Fraction fraction1, Fraction fraction2) => !(fraction1 == fraction2);
+
+    public static bool operator !=(Fraction fraction, double num) => !(fraction.Result == num);
+
+    public static bool operator !=(double num, Fraction fraction) => fraction != num;
+
+    public static bool operator <=(Fraction fraction1, Fraction fraction2) => fraction1.Result <= fraction2.Result;
+
+    public static bool operator <=(Fraction fraction, double num) => fraction.Result <= num;
+
+    public static bool operator <=(double num, Fraction fraction) =>  num <= fraction.Result;
+
+    public static bool operator >=(Fraction fraction1, Fraction fraction2) => fraction1.Result >= fraction2.Result;
+
+    public static bool operator >=(Fraction fraction, double num) => fraction.Result >= num;
+
+    public static bool operator >=(double num, Fraction fraction) => num >= fraction.Result;
+
+    public static bool operator <(Fraction fraction1, Fraction fraction2) => fraction1.Result < fraction2.Result;
+
+    public static bool operator <(Fraction fraction, double num) => fraction.Result < num;
+
+    public static bool operator <(double num, Fraction fraction) => num < fraction.Result;
+
+    public static bool operator >(Fraction fraction1, Fraction fraction2) => fraction1.Result > fraction2.Result;
+
+    public static bool operator >(Fraction fraction, double num) => fraction.Result > num;
+
+    public static bool operator >(double num, Fraction fraction) => num > fraction.Result;
+
 }
