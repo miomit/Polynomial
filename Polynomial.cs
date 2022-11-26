@@ -5,17 +5,17 @@ using System.Xml.Linq;
 
 class Polynomial
 {
-    public List<int> Coefficients { get; private set; }
+    public List<Fraction> Coefficients { get; private set; }
 
-    public Polynomial(string line) : this(Regex.Replace(line, @"\s+", " ").Split(" ").ToList().Select(int.Parse).ToList())
+    public Polynomial(string line) : this(Regex.Replace(line, @"\s+", " ").Split(" ").ToList().Select(Fraction.Parse).ToList())
     {
     }
 
-    public Polynomial(Polynomial polynomial) : this(new List<int>(polynomial.Coefficients)) 
+    public Polynomial(Polynomial polynomial) : this(new List<Fraction>(polynomial.Coefficients)) 
     { 
     }
 
-    public Polynomial(List<int> coefficients)
+    public Polynomial(List<Fraction> coefficients)
     {
         Coefficients = coefficients;
 
@@ -26,9 +26,9 @@ class Polynomial
 
     public Polynomial ShiftRight(int shift)
     {
-        var coefficients = new List<int> (Coefficients);
+        var coefficients = new List<Fraction> (Coefficients);
 
-        for (int i = 0; i < shift; i++) coefficients.Insert(0, 0);
+        for (int i = 0; i < shift; i++) coefficients.Insert(0, new Fraction());
 
         return new(coefficients);
     }
@@ -43,7 +43,7 @@ class Polynomial
         {
             if (coefficient != 0)
             {
-                res += $"{(coefficient < 0 ? $"- {(i != 0 && -coefficient == 1? "" : -coefficient)}" : (flag ? $"+ {(i != 0 && coefficient == 1? "" : coefficient)}" : $"{(i != 0 && coefficient == 1 ? "" : coefficient)}"))}{(i != 0 ? $"x{(i==1? "" : $"^{i}")}" : "")} ";
+                res += $"{(coefficient < 0 ? $"- {(i != 0 && -1 * coefficient == 1? "" : -1 * coefficient)}" : (flag ? $"+ {(i != 0 && coefficient == 1? "" : coefficient)}" : $"{(i != 0 && coefficient == 1 ? "" : coefficient)}"))}{(i != 0 ? $"x{(i==1? "" : $"^{i}")}" : "")} ";
                 flag = true;
             }
             i--;
@@ -54,7 +54,7 @@ class Polynomial
 
     public static (Polynomial, Polynomial) DivisionWithRemainder(Polynomial polynomial1, Polynomial polynomial2)
     {
-        List<int> coefficients = new();
+        List<Fraction> coefficients = new();
         Polynomial remain = new(polynomial1);
 
         while (remain.Coefficients.Count >= polynomial2.Coefficients.Count)
@@ -79,11 +79,11 @@ class Polynomial
 
     public static Polynomial operator +(Polynomial polynomial1, Polynomial polynomial2)
     {
-        List<int> coefficients = new();
+        List<Fraction> coefficients = new();
 
         for (int i = 0; i < Math.Max(polynomial1.Coefficients.Count, polynomial2.Coefficients.Count); i++)
         {
-            coefficients.Add(0);
+            coefficients.Add(new ());
             if (i < polynomial1.Coefficients.Count) coefficients[i] += polynomial1.Coefficients[i];
             if (i < polynomial2.Coefficients.Count) coefficients[i] += polynomial2.Coefficients[i];
         }
@@ -109,9 +109,9 @@ class Polynomial
         return res;
     }
 
-    public static Polynomial operator *(int num, Polynomial polynomial)
+    public static Polynomial operator *(Fraction num, Polynomial polynomial)
     {
-        List<int> coefficients = new();
+        List<Fraction> coefficients = new();
 
         foreach (var p in polynomial.Coefficients)
             coefficients.Add(p * num);
@@ -119,5 +119,9 @@ class Polynomial
         return new(coefficients);
     }
 
-    public static Polynomial operator *(Polynomial polynomial, int num) => num * polynomial;
+    public static Polynomial operator *(Polynomial polynomial, Fraction num) => num * polynomial;
+
+    public static Polynomial operator *(Polynomial polynomial, int num) => new Fraction(num) * polynomial;
+
+    public static Polynomial operator *(int num, Polynomial polynomial) => new Fraction(num) * polynomial;
 }
