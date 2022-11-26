@@ -121,4 +121,6 @@
 
     public static bool operator >(double num, Fraction fraction) => num > fraction.Result;
 
+    public static Fraction Parse(string s) => new (int.Parse(s));
+
 }
